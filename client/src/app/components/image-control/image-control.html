@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="inner-container">
+    @if (!imageUrl) {
+      <p>Please upload your image</p>
+    }
+
+    @if (imageUrl) {
+      <div class="image-container">
+        <img [src]="imageUrl" alt="Uploaded" class="image" />
+      </div>
+    }
+
+    <input type="file" (change)="{}" accept="image/*">
+    <button (click)="{}" [disabled]="!selectedFile">{{ (imageUrl ? 'Identify Image' : 'Upload Image') }}</button>
+
+
+
+  </div>
+</div>

@@ -25,10 +25,16 @@ export class ImageControl {
     this.prediction$ = this.uploadImageService.prediction$
     this.loading$ = this.uploadImageService.loadingSubject$
     this.error$ = this.uploadImageService.error$
-
-
   }
 
+  onFileSelected(event: Event): void {
+    const element = event.currentTarget as HTMLInputElement
+    const file = element.files?.[0]
+    if (file) {
+      this.selectedFile = file
+      this.imageUrl = URL.createObjectURL(file)
+    }
+  }
 
 
 }

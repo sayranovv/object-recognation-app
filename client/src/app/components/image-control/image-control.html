@@ -23,7 +23,7 @@
       <p class="error">{{ error }}</p>
     }
 
-    <input type="file" (change)="{}" accept="image/*">
+    <input type="file" (change)="onFileSelected($event)" accept="image/*">
     <button (click)="{}" [disabled]="!selectedFile">{{ (imageUrl ? 'Identify Image' : 'Upload Image') }}</button>
 
     @if (loading$ | async) {

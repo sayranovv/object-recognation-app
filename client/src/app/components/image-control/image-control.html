@@ -24,7 +24,7 @@
     }
 
     <input type="file" (change)="onFileSelected($event)" accept="image/*">
-    <button (click)="{}" [disabled]="!selectedFile">{{ (imageUrl ? 'Identify Image' : 'Upload Image') }}</button>
+    <button (click)="uploadImage()" [disabled]="!selectedFile">{{ (imageUrl ? 'Identify Image' : 'Upload Image') }}</button>
 
     @if (loading$ | async) {
       <p>Uploading and processing image</p>

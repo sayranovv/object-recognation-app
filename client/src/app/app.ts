@@ -1,13 +1,9 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {ImageControl} from './components/image-control/image-control';
+import { Component } from '@angular/core';
+import {ImageControl} from './components/image-control';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ImageControl],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [ImageControl],
+  template: '<app-image-control />',
 })
-export class App {
-  protected readonly title = signal('client');
-}
+export class App {}

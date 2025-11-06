@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from typing import Dict, Any
 from label_map import label_map
+from fastapi.middleware.cors import CORSMiddleware
 
 import numpy as np
 import tensorflow as tf
@@ -24,6 +25,14 @@ def run_inference(image: np.ndarray) -> Dict[str, Any]:
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.get("/")
 async def root():

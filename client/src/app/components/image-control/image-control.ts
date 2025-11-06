@@ -1,16 +1,18 @@
 import {Component} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {Prediction} from '../../types/types';
+import {PredictionType} from '../../types/types';
 import {Upload} from '../../services/upload';
-import {AsyncPipe, PercentPipe, UpperCasePipe} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {api_key} from '../../keys/api_keys';
+import {Image} from '../image/image';
+import {Prediction} from '../prediction/prediction';
 
 @Component({
   selector: 'app-image-control',
   imports: [
     AsyncPipe,
-    UpperCasePipe,
-    PercentPipe
+    Image,
+    Prediction
   ],
   templateUrl: './image-control.html',
   styleUrl: './image-control.css',
@@ -18,7 +20,7 @@ import {api_key} from '../../keys/api_keys';
 export class ImageControl {
   imageUrl: string | null = null;
   selectedFile: File | null = null;
-  prediction$: Observable<Prediction[] | null>;
+  prediction$: Observable<PredictionType[] | null>;
   loading$: Observable<boolean>;
   error$: Observable<string | null>;
 

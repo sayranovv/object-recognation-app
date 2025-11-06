@@ -15,38 +15,6 @@
   padding: 20px;
 }
 
-.image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.image {
-  max-width: 300px;
-  max-height: 300px;
-  object-fit: contain;
-}
-
-.prediction-box {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.category-text {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.category-accuracy {
-  font-size: 18px;
-  color: #666;
-}
-
 .error {
   color: #ff0000;
   margin-top: 10px;

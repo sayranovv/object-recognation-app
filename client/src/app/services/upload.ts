@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs';
-import {Prediction} from '../types/types';
+import {PredictionType} from '../types/types';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Upload {
-  private predictionSubject = new BehaviorSubject<Prediction[] | null>(null)
+  private predictionSubject = new BehaviorSubject<PredictionType[] | null>(null)
   private loadingSubject = new BehaviorSubject<boolean>(false)
   private errorSubject = new BehaviorSubject<string | null>(null)
 
@@ -19,14 +19,14 @@ export class Upload {
 
   }
 
-  uploadImage(file: File, uploadUrl: string): Observable<Prediction[]> {
+  uploadImage(file: File, uploadUrl: string): Observable<PredictionType[]> {
     const formData = new FormData()
     formData.append('file', file)
 
     this.loadingSubject.next(true)
     this.errorSubject.next(null)
 
-    return this.http.post<Prediction[]>(uploadUrl, formData).pipe(
+    return this.http.post<PredictionType[]>(uploadUrl, formData).pipe(
       tap((predictions) => {
         this.predictionSubject.next(predictions)
         this.loadingSubject.next(false)

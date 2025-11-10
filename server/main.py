@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Dict, Any
 from label_map import label_map
@@ -34,33 +34,36 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)) -> JSONResponse:
-    contents = await file.read()
-    image = np.array(cv2.imdecode(np.frombuffer(contents, np.uint8), cv2.IMREAD_COLOR))
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(400, "File must be an image")
 
-    detections = run_inference(image_rgb)
+    try:
 
-    num_detections = int(detections.pop('num_detections'))
-    detections = {key: value[0, :num_detections].numpy() for key, value in detections.items()}
+        contents = await file.read()
+        image = np.array(cv2.imdecode(np.frombuffer(contents, np.uint8), cv2.IMREAD_COLOR))
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    for key in detections:
-        detections[key] = detections[key].tolist()
+        detections = run_inference(image_rgb)
 
-    results = []
+        num_detections = int(detections.pop('num_detections'))
+        detections = {key: value[0, :num_detections].numpy() for key, value in detections.items()}
 
-    for i in range(num_detections):
-        if detections['detection_scores'][i] >= 0.5:
-            class_id = int(detections['detection_classes'][i])
-            category = label_map.get(class_id, 'unknown')
-            box = detections['detection_boxes'][i]
-            score = detections['detection_scores'][i]
-            results.append({'box': box, 'category': category, 'score': score})
+        for key in detections:
+            detections[key] = detections[key].tolist()
 
-    print('Final', results)
-    return JSONResponse(content=results)
+        results = []
+
+        for i in range(num_detections):
+            if detections['detection_scores'][i] >= 0.5:
+                class_id = int(detections['detection_classes'][i])
+                category = label_map.get(class_id, 'unknown')
+                box = detections['detection_boxes'][i]
+                score = detections['detection_scores'][i]
+                results.append({'box': box, 'category': category, 'score': score})
+
+        print('Final', results)
+        return JSONResponse(content=results)
+    except Exception as e:
+        raise HTTPException(500, f"Error processing image: {str(e)}")
